@@ -1,7 +1,7 @@
 import { ProjectList } from "./project";
 
 const renderTableHead = () => {
-  const headerList = ['Project', 'Task', 'Priority', 'Due Date'];
+  const headerList = ['Project', 'Task', 'Priority', 'DueDate'];
 
   const mainContainer = document.getElementById('main-container');
 
@@ -23,6 +23,7 @@ const renderTableHead = () => {
   for (let header in headerList) {
     let temprow = document.createElement('th');
     temprow.scope = 'col';
+    temprow.id = headerList[header];
     temprow.innerText = headerList[header];
     tableHeadRow.appendChild(temprow);
   };
@@ -39,13 +40,13 @@ const renderTableBody = () => {
   const mainTable = document.getElementById('main-table');
 
   const renderProjectNames = () => {
-    ProjectList.showProjects().forEach((project, index) => {
+    ProjectList.allProjects().forEach((project, index) => {
       let temprow = document.createElement('tr');
       let tempData = document.createElement('td');
 
       tableBody.id = 'table-body';
 
-      temprow.id = index;
+      temprow.id = `row-${index}`;
 
       tempData.innerText = project.projectTitle();
       tempData.className = 'project-name';
@@ -56,17 +57,22 @@ const renderTableBody = () => {
     });
   }
 
-  const renderTasks = () => {
-    let currentProject = ProjectList.showProjects()[0];
+  const renderTasks = (project) => {
+    let currentProject = project;
     const currentBody = document.getElementById('table-body');
 
     currentProject.todoLists().forEach((list, i) => {
-      let appendingRow = document.getElementById(`${i}`);
+      let appendingRow = document.getElementById(`row-${i}`);
 
       if (appendingRow === null) {
         appendingRow = document.createElement('tr');
-        appendingRow.id = `${i}`;
+
+        appendingRow.id = `row-${i}`;
+
         let emptyTableData = document.createElement('td');
+
+        emptyTableData.className = 'placeholder';
+
         appendingRow.appendChild(emptyTableData);
         currentBody.appendChild(appendingRow);
       }
@@ -74,6 +80,10 @@ const renderTableBody = () => {
       let tempDataTitle = document.createElement('td');
       let tempDataPriority = document.createElement('td');
       let tempDataDueDate = document.createElement('td');
+
+      tempDataTitle.className = 'task-title';
+      tempDataPriority.className = 'task-priority';
+      tempDataDueDate.className = 'task-duedate';
 
       tempDataTitle.innerText = `${list.listTitle()}`;
       tempDataPriority.innerText = `${list.listPriority()}`;

@@ -1,15 +1,15 @@
 const ProjectList = (() => {
   let projectLists = [];
-  
+
   const addProject = (item) => {
     projectLists.push(item)
   }
   const removeProject = (item) => {
     projectLists = projectLists.filter(project => project != item);
   }
-  const showProjects = () => projectLists;
+  const allProjects = () => projectLists;
 
-  return { addProject, removeProject, showProjects }
+  return { addProject, removeProject, allProjects }
 })();
 
 const Project = (title = 'Default') => {
