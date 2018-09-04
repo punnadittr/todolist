@@ -1,8 +1,22 @@
-const Project = (title = 'default') => {
+const ProjectList = (() => {
+  let projectLists = [];
+  
+  const addProject = (item) => {
+    projectLists.push(item)
+  }
+  const removeProject = (item) => {
+    projectLists = projectLists.filter(project => project != item);
+  }
+  const showProjects = () => projectLists;
+
+  return { addProject, removeProject, showProjects }
+})();
+
+const Project = (title = 'Default') => {
   let todoList = [];
 
   const projectTitle = () => title;
-  const projectList = () => todoList;
+  const todoLists = () => todoList;
 
   const append = (item) => {
     todoList.push(item);
@@ -12,8 +26,8 @@ const Project = (title = 'default') => {
   }
   const rename = (newName) => {
     title = newName;
-  }
-  return {projectTitle, projectList, append, removeList, rename}
+  }  
+  return {projectTitle, todoLists, append, removeList, rename}
 }
 
-export default Project;
+export { Project, ProjectList }
