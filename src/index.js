@@ -16,12 +16,10 @@ renderTableHead();
 renderTableBody().renderProjectNames();
 
 ProjectClickEvents.clickToViewTasks();
-ProjectModal.renderAddProjectModal();
-TaskModal.renderAddTaskModal();
 ProjectButtons.renderAddProjectButton();
-
 TaskButtons.renderAddTaskButton();
-ButtonDOM.addProjectBtnDOM();
-ButtonDOM.addTaskBtnDOM();
+
+ButtonDOM.addProjectIconDOM();
+ButtonDOM.addTaskIconDOM();
 
 console.log(Helper.findProjectByName('FestBrooke'));

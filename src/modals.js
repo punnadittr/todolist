@@ -9,11 +9,12 @@ const ProjectModal = (() => {
                                   'Add Project')
   }
   const resetModal = () => {
-    const labelField = document.getElementsByTagName('label')[0];
-    const inputField = document.getElementById('add-project-field');
-    labelField.innerText = 'Enter Project Name';
-    labelField.style.color = 'black';
-    inputField.value = '';
+    const modal = document.getElementById('add-project-dialog');
+    if (modal != null) {
+    modal.parentNode.removeChild(modal);
+    } else { 
+      false;
+    }
   }
   const displayErrorMsg = (message) => {
     const labelField = document.getElementsByTagName('label')[0];
@@ -29,16 +30,16 @@ const TaskModal = (() => {
                                   'add-task-dialog',
                                   'Add New Task',                                 
                                   'add-task-btn',
-                                  'Add Task')
+                                  'Add Task',
+                                  renderProjectSelect())
   }
   const resetModal = () => {
-    const taskName = document.getElementById('add-task-name-field');
-    const dueDate = document.getElementById('task-date');
-    document.getElementById('task-name-label').innerText = 'Enter Task Name'
-    document.getElementById('duedate-label').innerText = 'Due Date';
-
-    taskName.value = ''
-    dueDate.value = ''
+    const modal = document.getElementById('add-task-dialog');
+    if (modal != null) {
+      modal.parentNode.removeChild(modal);
+    } else {
+      false;
+    }
   }
   const displayErrorMsg = (type, message) => {
     if (type === 'nameError') {
@@ -51,25 +52,25 @@ const TaskModal = (() => {
       dueDateLabel.style.color = 'red';
     }
   }
-  return { renderAddTaskModal, resetModal, displayErrorMsg }
+  const renderProjectSelect = () => {
+    let output = '';
+    let projectSelection = [];
+    ProjectList.allProjects().forEach(element => {
+      projectSelection.push(element.projectTitle());
+    });
+    projectSelection.forEach(project => {
+      output = output + `<option>${project}</option>`
+    })
+   return output;
+  }
+  return { renderAddTaskModal, resetModal, displayErrorMsg, renderProjectSelect }
 })();
 
 const ModalTemplate = (() => {
-  const createFormModal = (formType, id, title, btnID, btnContent) => {
+  const createFormModal = (formType, id, title, btnID, btnContent, projectsOptions = '') => {
     const modal = document.createElement('div');
     modal.className = 'modal fade';
     modal.id = id;
-    const renderProjectSelect = () => {
-      let output = '';
-      let projectSelection = [];
-      ProjectList.allProjects().forEach(element => {
-        projectSelection.push(element.projectTitle());
-      });
-      projectSelection.forEach(project => {
-        output = output + `<option>${project}</option>`
-      })
-     return output;
-    }
     const renderForm = (formType) => { 
       if (formType === 'project') {
         // Form for adding project
@@ -85,7 +86,7 @@ const ModalTemplate = (() => {
                   <div class="form-group">
                     <label id="select-project-label" for="select-project" class="col-form-label">Select Project</label>
                     <select class="form-control" id="project-select">
-                    ${renderProjectSelect()}
+                    ${projectsOptions}
                     </select>
                     <label id="task-name-label" for="add-task-field" class="col-form-label">Enter Task Name</label>
                     <input type="text" class="form-control" id="add-task-name-field">
@@ -101,6 +102,7 @@ const ModalTemplate = (() => {
                 </form>`;
     }
   };  
+  // Generic modal template
     modal.innerHTML = 
     `<div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">

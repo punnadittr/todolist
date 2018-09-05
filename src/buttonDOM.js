@@ -5,6 +5,22 @@ import ToDoList from "./todolist";
 import Helper from "./helper";
 
 const ButtonDOM = (() => {
+  const addProjectIconDOM = () => {
+    const addProjectIcon = document.getElementById('add-project-icon');
+    addProjectIcon.addEventListener('click', () => {
+      ProjectModal.resetModal();
+      ProjectModal.renderAddProjectModal();
+      addProjectBtnDOM();
+    })
+  }
+  const addTaskIconDOM = () => {
+    const addTaskIcon = document.getElementById('add-task-icon');
+    addTaskIcon.addEventListener('click', () => {
+      TaskModal.resetModal();
+      TaskModal.renderAddTaskModal();
+      addTaskBtnDOM();
+    })
+  }
   const addProjectBtnDOM = () => {   
     const addProjectBtn = document.getElementById('add-project-btn');
     addProjectBtn.addEventListener('click', () => {
@@ -16,7 +32,6 @@ const ButtonDOM = (() => {
       } else {
         const newProject = Project(inputFieldValue);
         ProjectList.addProject(newProject);
-        ProjectModal.resetModal();
         ClearTableTasks();
       }
     });
@@ -36,12 +51,11 @@ const ButtonDOM = (() => {
         const project = Helper.findProjectByName(projectName);
         console.log(project.projectTitle())
         project.appendItem(newTodo);
-        TaskModal.resetModal();
         ClearTableTasks();
       }
     });
   }
-  return { addProjectBtnDOM, addTaskBtnDOM }
+  return { addProjectIconDOM, addTaskIconDOM }
 })();
 
 export default ButtonDOM;

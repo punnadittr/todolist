@@ -1,16 +1,17 @@
 const GenericButtons = (() => {
-  const renderAddBtn = (insertTarget, modalID) => {
+  const renderAddBtn = (insertTarget, modalID, id) => {
     const target = document.getElementById(insertTarget);
     target.innerHTML = `${target.innerHTML} <i class="fas fa-plus-square" 
     data-toggle="modal" 
-    data-target="#${modalID}"></i>`
+    data-target="#${modalID}"
+    id="${id}"></i>`
   }
   return { renderAddBtn }
 })();
 
 const TaskButtons = (() => {
-  const renderAddTaskButton = (modalID) => {
-    GenericButtons.renderAddBtn('Task', 'add-task-dialog');
+  const renderAddTaskButton = () => {
+    GenericButtons.renderAddBtn('Task', 'add-task-dialog', 'add-task-icon');
   }
   const renderChangeTaskNameButton = () => {
 
@@ -23,7 +24,7 @@ const TaskButtons = (() => {
 
 const ProjectButtons = (() => {
   const renderAddProjectButton = () => {
-    GenericButtons.renderAddBtn('Project', 'add-project-dialog');
+    GenericButtons.renderAddBtn('Project', 'add-project-dialog', 'add-project-icon');
   }
   const renderDeleteProjectButton = () => {
 
