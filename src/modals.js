@@ -1,34 +1,108 @@
+import { ProjectList } from "./project";
+
 const ProjectModal = (() => {
   const renderAddProjectModal = () => {
-    ModalTemplate.createFormModal('add-project-dialog', 
-                                  'Add New Project', 
-                                  'Enter Project Name', 
-                                  'add-project-field', 
+    ModalTemplate.createFormModal('project',
+                                  'add-project-dialog', 
+                                  'Add New Project',                                  
                                   'add-project-btn',
                                   'Add Project')
   }
-  return { renderAddProjectModal }
+  const resetModal = () => {
+    const labelField = document.getElementsByTagName('label')[0];
+    const inputField = document.getElementById('add-project-field');
+    labelField.innerText = 'Enter Project Name';
+    labelField.style.color = 'black';
+    inputField.value = '';
+  }
+  const displayErrorMsg = (message) => {
+    const labelField = document.getElementsByTagName('label')[0];
+    labelField.innerText = message
+    labelField.style.color = 'red';
+  }
+  return { renderAddProjectModal, resetModal, displayErrorMsg }
 })();
 
 const TaskModal = (() => {
   const renderAddTaskModal = () => {
-    ModalTemplate.createFormModal('add-task-dialog',
-                                  'Add New Task',
-                                  'Enter Task',
-                                  'add-task-field',
+    ModalTemplate.createFormModal('task',
+                                  'add-task-dialog',
+                                  'Add New Task',                                 
                                   'add-task-btn',
                                   'Add Task')
   }
-  return { renderAddTaskModal }
+  const resetModal = () => {
+    const taskName = document.getElementById('add-task-name-field');
+    const dueDate = document.getElementById('task-date');
+    document.getElementById('task-name-label').innerText = 'Enter Task Name'
+    document.getElementById('duedate-label').innerText = 'Due Date';
+
+    taskName.value = ''
+    dueDate.value = ''
+  }
+  const displayErrorMsg = (type, message) => {
+    if (type === 'nameError') {
+      const taskNameLabel = document.getElementById('task-name-label')
+      taskNameLabel.innerText = message;
+      taskNameLabel.style.color = 'red';
+    } else {
+      const dueDateLabel = document.getElementById('duedate-label');
+      dueDateLabel.innerText = message;
+      dueDateLabel.style.color = 'red';
+    }
+  }
+  return { renderAddTaskModal, resetModal, displayErrorMsg }
 })();
 
 const ModalTemplate = (() => {
-  const createFormModal = (id, title, formLabel, formID, btnID, btnContent) => {
+  const createFormModal = (formType, id, title, btnID, btnContent) => {
     const modal = document.createElement('div');
     modal.className = 'modal fade';
     modal.id = id;
-    modal.innerHTML = ` 
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    const renderProjectSelect = () => {
+      let output = '';
+      let projectSelection = [];
+      ProjectList.allProjects().forEach(element => {
+        projectSelection.push(element.projectTitle());
+      });
+      projectSelection.forEach(project => {
+        output = output + `<option>${project}</option>`
+      })
+     return output;
+    }
+    const renderForm = (formType) => { 
+      if (formType === 'project') {
+        // Form for adding project
+        return `<form>
+                  <div class="form-group">
+                    <label for="add-project-field" class="col-form-label">Enter Project Name</label>
+                    <input type="text" class="form-control" id="add-project-field">
+                  </div>
+                </form>`;
+      } else {
+        // Form for adding task
+        return `<form>
+                  <div class="form-group">
+                    <label id="select-project-label" for="select-project" class="col-form-label">Select Project</label>
+                    <select class="form-control" id="project-select">
+                    ${renderProjectSelect()}
+                    </select>
+                    <label id="task-name-label" for="add-task-field" class="col-form-label">Enter Task Name</label>
+                    <input type="text" class="form-control" id="add-task-name-field">
+                    <label id="priority-label" for="priority-select" class="col-form-label">Priority</label>
+                    <select class="form-control" id="priority-select">
+                      <option>Low</option>
+                      <option>Normal</option>
+                      <option>High</option>
+                    </select>
+                    <label id="duedate-label" for="task-date" class="col-form-label">Due Date</label>
+                    <input id="task-date" class="form-control" type="date">
+                  </div>
+                </form>`;
+    }
+  };  
+    modal.innerHTML = 
+    `<div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">${title}</h5>
@@ -36,13 +110,8 @@ const ModalTemplate = (() => {
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body">          
-          <form>
-            <div class="form-group">
-              <label for="${formID}" class="col-form-label">${formLabel}</label>
-              <input type="text" class="form-control" id="${formID}">
-            </div>
-          </form>
+        <div class="modal-body">     
+         ${renderForm(formType)}
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>

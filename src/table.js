@@ -64,11 +64,13 @@ const renderTableBody = () => {
     currentProject.todoLists().forEach((list, i) => {
       let appendingRow = document.getElementById(`row-${i}`);
 
+      // If row is not created yet, create a new row
       if (appendingRow === null) {
         appendingRow = document.createElement('tr');
 
         appendingRow.id = `row-${i}`;
 
+        // Empty td element created for every row of tasks
         let emptyTableData = document.createElement('td');
 
         emptyTableData.className = 'placeholder';

@@ -1,5 +1,5 @@
 import { renderTableBody } from "./table";
-import AddProjectClickEvents from "./tableDOM";
+import ProjectClickEvents from "./tableDOM";
 
 const ClearTableTasks = () => {
   const mainTable = document.getElementById('main-table');
@@ -7,7 +7,7 @@ const ClearTableTasks = () => {
   mainTable.removeChild(removing);
 
   renderTableBody().renderProjectNames();
-  AddProjectClickEvents();
+  ProjectClickEvents.clickToViewTasks();
 }
 
 export default ClearTableTasks;

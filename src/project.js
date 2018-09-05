@@ -8,8 +8,15 @@ const ProjectList = (() => {
     projectLists = projectLists.filter(project => project != item);
   }
   const allProjects = () => projectLists;
-
-  return { addProject, removeProject, allProjects }
+  const isDuplicate = (project) => {
+    for (let i = 0; i < allProjects().length; i++) {
+      if (projectLists[i].projectTitle() === project) {
+        return true;
+      }
+    }
+    return false;
+  };
+  return { addProject, removeProject, allProjects, isDuplicate }
 })();
 
 const Project = (title = 'Default') => {
@@ -18,7 +25,7 @@ const Project = (title = 'Default') => {
   const projectTitle = () => title;
   const todoLists = () => todoList;
 
-  const append = (item) => {
+  const appendItem = (item) => {
     todoList.push(item);
   }
   const removeList = (item) => {
@@ -27,7 +34,7 @@ const Project = (title = 'Default') => {
   const rename = (newName) => {
     title = newName;
   }  
-  return {projectTitle, todoLists, append, removeList, rename}
+  return {projectTitle, todoLists, appendItem, removeList, rename}
 }
 
 export { Project, ProjectList }

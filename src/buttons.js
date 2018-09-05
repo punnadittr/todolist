@@ -8,7 +8,7 @@ const GenericButtons = (() => {
   return { renderAddBtn }
 })();
 
-const TaskButtons = () => {
+const TaskButtons = (() => {
   const renderAddTaskButton = (modalID) => {
     GenericButtons.renderAddBtn('Task', 'add-task-dialog');
   }
@@ -19,9 +19,9 @@ const TaskButtons = () => {
 
   }
   return { renderAddTaskButton, renderChangeTaskNameButton, renderDeleteTaskButton }
-}
+})();
 
-const ProjectButtons = () => {
+const ProjectButtons = (() => {
   const renderAddProjectButton = () => {
     GenericButtons.renderAddBtn('Project', 'add-project-dialog');
   }
@@ -32,7 +32,6 @@ const ProjectButtons = () => {
 
   }
   return { renderChangeProjectNameButton, renderDeleteProjectButton, renderAddProjectButton }
-}
-
+})();
 
 export { TaskButtons, ProjectButtons }
