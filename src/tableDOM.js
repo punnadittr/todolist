@@ -1,11 +1,9 @@
-import { ProjectList } from "./project";
-import { renderTableBody } from "./table";
-import ClearTableTasks from "./clearTable";
+import Table from "./table";
 import Helper from "./helper";
 
 const ProjectClickEvents = (() => {
   let currentProject;
-  const clickToViewTasks = () => {    
+  const addEventToProjectNames = () => {    
     const projects = document.getElementsByClassName('project-name');
     for (let i = 0; i < projects.length; i++) {
       projects[i].addEventListener('click', (e) => {
@@ -13,14 +11,14 @@ const ProjectClickEvents = (() => {
       currentProject = Helper.findProjectByName(e.target.textContent);
       console.log(currentProject.projectTitle());
       // Clear the tasks then adding back projects based on what is clicked
-      ClearTableTasks();
-      renderTableBody().renderTasks(currentProject);
+      Table.resetTable();
+      Table.renderTasks(currentProject)
       });
     }  
   };  
   const getCurrentProject = () => currentProject;
 
-  return { clickToViewTasks, getCurrentProject }
+  return { addEventToProjectNames, getCurrentProject }
 })();
 
 export default ProjectClickEvents;

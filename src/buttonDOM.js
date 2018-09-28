@@ -1,42 +1,45 @@
 import { ProjectList, Project } from "./project";
 import { ProjectModal, TaskModal } from "./modals";
-import ClearTableTasks from "./clearTable";
 import ToDoList from "./todolist";
 import Helper from "./helper";
+import Table from "./table";
 
 const ButtonDOM = (() => {
-  const addProjectIconDOM = () => {
+  const addEventToProjectIcon = () => {
     const addProjectIcon = document.getElementById('add-project-icon');
     addProjectIcon.addEventListener('click', () => {
       ProjectModal.resetModal();
       ProjectModal.renderAddProjectModal();
-      addProjectBtnDOM();
-    })
+      addEventToProjectBtn();
+    });
   }
-  const addTaskIconDOM = () => {
+  const addEventToTaskIcon = () => {
     const addTaskIcon = document.getElementById('add-task-icon');
     addTaskIcon.addEventListener('click', () => {
       TaskModal.resetModal();
       TaskModal.renderAddTaskModal();
-      addTaskBtnDOM();
-    })
+      addEventToTaskBtn();
+    });
   }
-  const addProjectBtnDOM = () => {   
+  const addEventToProjectBtn = () => {   
     const addProjectBtn = document.getElementById('add-project-btn');
     addProjectBtn.addEventListener('click', () => {
       const inputFieldValue = document.getElementById('add-project-field').value;
+      // Check if project name already exists
       if (ProjectList.isDuplicate(inputFieldValue) === true) {
         ProjectModal.displayErrorMsg('Cannot create a duplicate project name');
+      // Check if the input field is empty
       } else if (inputFieldValue.trim() === '') {
         ProjectModal.displayErrorMsg('Project name cannot be empty');
       } else {
+        // Create a new project and add to ProjectList array
         const newProject = Project(inputFieldValue);
         ProjectList.addProject(newProject);
-        ClearTableTasks();
+        Table.resetTable();
       }
     });
   }
-  const addTaskBtnDOM = () => {
+  const addEventToTaskBtn = () => {
     const addTaskBtn = document.getElementById('add-task-btn');
     addTaskBtn.addEventListener('click', () => {
       const projectName = document.getElementById('project-select').value;
@@ -51,11 +54,11 @@ const ButtonDOM = (() => {
         const project = Helper.findProjectByName(projectName);
         console.log(project.projectTitle())
         project.appendItem(newTodo);
-        ClearTableTasks();
+        Table.resetTable();
       }
     });
   }
-  return { addProjectIconDOM, addTaskIconDOM }
+  return { addEventToProjectIcon, addEventToTaskIcon }
 })();
 
 export default ButtonDOM;

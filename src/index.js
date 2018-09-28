@@ -1,25 +1,24 @@
 import renderTodoSkeleton from "./skeleton";
-import { renderTableHead, renderTableBody } from "./table";
-import ToDoList from "./todolist";
 import { Project, ProjectList } from "./project" ;
 import ProjectClickEvents from "./tableDOM";
 import { ProjectButtons, TaskButtons } from "./buttons";
-import { ProjectModal, TaskModal } from "./modals";
 import ButtonDOM from "./buttonDOM";
 import Helper from "./helper";
+import Table from "./table";
 
 const defaultProject = Project('Default');
 ProjectList.addProject(defaultProject);
 
 renderTodoSkeleton('TO DO LIST');
-renderTableHead();
-renderTableBody().renderProjectNames();
 
-ProjectClickEvents.clickToViewTasks();
+Table.renderTableHead();
+Table.renderProjectNames();
+
+ProjectClickEvents.addEventToProjectNames();
 ProjectButtons.renderAddProjectButton();
 TaskButtons.renderAddTaskButton();
 
-ButtonDOM.addProjectIconDOM();
-ButtonDOM.addTaskIconDOM();
+ButtonDOM.addEventToProjectIcon();
+ButtonDOM.addEventToTaskIcon();
 
 console.log(Helper.findProjectByName('FestBrooke'));
